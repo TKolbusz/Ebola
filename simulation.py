@@ -2,9 +2,11 @@ from mesa import Model
 from mesa.time import RandomActivation
 from agent import Agent
 from mesa.space import MultiGrid
+from mesa.space import NetworkGrid
 from mesa.datacollection import DataCollector
 import numpy as np
 import matplotlib.pyplot as plt
+import networkx as nx
 
 from state import State
 
@@ -38,9 +40,16 @@ class Simulation(Model):
 
     def __init__(self, params, seed=None):
         self.N = params.get('N')
-        self.grid = MultiGrid(params.get('x'), params.get('y'), True)
+
+        
+        # self.grid = MultiGrid(params.get('x'), params.get('y'), True)
+        self.G = nx.watts_strogatz_graph(n=self.N, k=3, p=0.5)
+        self.grid = NetworkGrid(self.G)
+
+
         self.schedule = RandomActivation(self)
 
+        
         self.S_E = params.get('S_E')
         self.I_E = params.get('I_E')
         self.D_E = params.get('D_E')
@@ -53,13 +62,18 @@ class Simulation(Model):
         self.running = True
         self.cycle = 0
 
-        for i in range(self.N):
+        for i, node in enumerate(self.G.nodes()):
             a = Agent(i, self)
             self.schedule.add(a)
-            # place Agent randomly on the grid
-            x = self.random.randrange(self.grid.width)
-            y = self.random.randrange(self.grid.height)
-            self.grid.place_agent(a, (x, y))
+            self.grid.place_agent(a, node)
+
+        # for i in range(self.N):
+        #     a = Agent(i, self)
+        #     self.schedule.add(a)
+        #     # place Agent randomly on the grid
+        #     x = self.random.randrange(self.grid.width)
+        #     y = self.random.randrange(self.grid.height)
+        #     self.grid.place_agent(a, (x, y))
 
         self.datacollector = DataCollector(
             model_reporters={
