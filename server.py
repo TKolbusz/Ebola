@@ -6,14 +6,16 @@ from simulation import Simulation
 from state import State
 
 params = {
-    "N": 100,
+    "N": 200, # number of Agents
     "x": 100,
     "y": 100,
-    "S_E": 0.05,  # possibility of Susceptible -> Exposed transition
-    "E_I": 0.06,  # possibility of Exposed -> Infected transition
-    "I_D": 0.07,  # possibility of Infected -> Dead transition
-    "I_R": 0.10,  # possibility of Infected -> Recovered transition
-    "P": 0.50,  # probability od Edge moving - not used ATM
+    "S_E": 0.01,  # possibility of becoming exposed by itself
+    "I_E": 0.4,  # possibility infecting while being infected
+    "D_E": 0.1,  # possibility infecting while being dead
+    "I_D": 0.15,  # possibility of Infected -> Dead transition
+    "I_R": 0.07,  # possibility of Infected -> Recovered transition
+    "Quarantine" : 0.5,
+    "MaxDaysInfected" : 7,
     "D_B": 3,  # days it takes to bury the dead
 }
 

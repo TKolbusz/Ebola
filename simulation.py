@@ -40,11 +40,14 @@ class Simulation(Model):
         self.N = params.get('N')
         self.grid = MultiGrid(params.get('x'), params.get('y'), True)
         self.schedule = RandomActivation(self)
+
         self.S_E = params.get('S_E')
-        self.E_I = params.get('E_I')
+        self.I_E = params.get('I_E')
+        self.D_E = params.get('D_E')
         self.I_D = params.get('I_D')
         self.I_R = params.get('I_R')
-        self.P = params.get('P')
+        self.Quarantine = params.get('Quarantine')
+        self.MaxDaysInfected = params.get('MaxDaysInfected')
         self.D_B = params.get('D_B')
 
         self.running = True
