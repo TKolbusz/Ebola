@@ -20,7 +20,8 @@ class Agent(mesa.Agent):
             include_center=False
         )
         new_position = self.random.choice(possible_steps)
-        self.model.grid.move_agent(self, new_position)
+        
+        self.model.grid.move_agent(self, (3,3))
 
     def infect_others(self, state: State):
         ''' Infect others in same cell based on infection rate '''
@@ -38,11 +39,11 @@ class Agent(mesa.Agent):
 
     def step(self):
         rand = self.random.random()
-        if not self.selfQuarantine and (
-                self.state == State.SUSCEPTIBLE or self.state == State.EXPOSED or self.state == State.INFECTED
-        ):
-            self.move_to_next()
-
+        # if not self.selfQuarantine and (
+        #         self.state == State.SUSCEPTIBLE or self.state == State.EXPOSED or self.state == State.INFECTED
+        # ):
+        #     self.move_to_next()
+            
         if self.state == State.SUSCEPTIBLE:
             if rand < self.model.S_E:
                 self.state = State.EXPOSED
