@@ -11,7 +11,6 @@ class Agent(mesa.Agent):
         self.daysDead = 0
         self.daysExposed = 0
         self.daysInfected = 0
-        self.selfQuarantine = False
 
     def move_to_next(self):
         possible_steps = self.model.grid.get_neighborhood(
@@ -51,13 +50,11 @@ class Agent(mesa.Agent):
         elif self.state == State.EXPOSED:
             if self.daysExposed < 2:
                 pass
-            if self.daysExposed > 20:
+            if self.daysExposed > self.model.MaxDaysExposed:
                 self.state = State.INFECTED
-                self.selfQuarantine = rand < self.model.Quarantine
             else:
                 if rand < self.model.I_E:
                     self.state = State.INFECTED
-                    self.selfQuarantine = rand < self.model.Quarantine
                 else:
                     self.daysExposed += 1
         elif self.state == State.INFECTED:

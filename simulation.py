@@ -55,8 +55,8 @@ class Simulation(Model):
         self.D_E = params.get('D_E')
         self.I_D = params.get('I_D')
         self.I_R = params.get('I_R')
-        self.Quarantine = params.get('Quarantine')
         self.MaxDaysInfected = params.get('MaxDaysInfected')
+        self.MaxDaysExposed = params.get('MaxDaysExposed')
         self.D_B = params.get('D_B')
 
         self.running = True
