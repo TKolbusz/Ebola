@@ -1,4 +1,5 @@
 import mesa
+from pygame import mixer  # Load the popular external library
 import numpy as np
 
 from state import State
@@ -69,6 +70,7 @@ class Agent(mesa.Agent):
                 self.state = State.RECOVERED
             elif rand < self.model.I_D + self.model.I_R:
                 self.state = State.DEAD
+                play_death_sound()
             else:
                 if self.daysInfected > self.model.MaxDaysInfected:
                     self.state = State.RECOVERED
@@ -84,3 +86,7 @@ class Agent(mesa.Agent):
             pass
         elif self.state == State.BURIED:
             pass
+def play_death_sound():
+    mixer.init()
+    mixer.music.load('death.mp3')
+    mixer.music.play()
