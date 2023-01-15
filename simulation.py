@@ -40,10 +40,12 @@ class Simulation(Model):
 
     def __init__(self, params, seed=None):
         self.N = params.get('N')
+        self.K = params.get('K')
+        self.P = params.get('P')
 
         
         # self.grid = MultiGrid(params.get('x'), params.get('y'), True)
-        self.G = nx.watts_strogatz_graph(n=self.N, k=3, p=0.5)
+        self.G = nx.watts_strogatz_graph(n=self.N, k=self.K, p=self.P)
         self.grid = NetworkGrid(self.G)
 
 
@@ -52,11 +54,13 @@ class Simulation(Model):
         
         self.S_E = params.get('S_E')
         self.I_E = params.get('I_E')
+        self.Q_I_E = params.get('Q_I_E')
+        self.Q = params.get('Q')
         self.D_E = params.get('D_E')
         self.I_D = params.get('I_D')
         self.I_R = params.get('I_R')
-        self.Quarantine = params.get('Quarantine')
         self.MaxDaysInfected = params.get('MaxDaysInfected')
+        self.MaxDaysExposed = params.get('MaxDaysExposed')
         self.D_B = params.get('D_B')
 
         self.running = True

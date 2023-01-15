@@ -8,10 +8,10 @@ class Agent(mesa.Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
         self.state = State.SUSCEPTIBLE
+        self.onQuarantine = False
         self.daysDead = 0
         self.daysExposed = 0
         self.daysInfected = 0
-        self.selfQuarantine = False
 
     def move_to_next(self):
         possible_steps = self.model.grid.get_neighborhood(
@@ -27,7 +27,10 @@ class Agent(mesa.Agent):
         ''' Infect others in same cell based on infection rate '''
         neighbors = self.model.grid.get_cell_list_contents([self.pos])
         if state == State.INFECTED:
-            chanceToInfect = self.model.I_E
+            if self.onQuarantine:
+                chanceToInfect = self.model.Q_I_E
+            else:
+                chanceToInfect = self.model.I_E
         elif state == State.DEAD:
             chanceToInfect = self.model.D_E
         else:
@@ -51,13 +54,13 @@ class Agent(mesa.Agent):
         elif self.state == State.EXPOSED:
             if self.daysExposed < 2:
                 pass
-            if self.daysExposed > 20:
+            if self.daysExposed > self.model.MaxDaysExposed:
                 self.state = State.INFECTED
-                self.selfQuarantine = rand < self.model.Quarantine
+                self.onQuarantine = rand < self.model.Q
             else:
                 if rand < self.model.I_E:
                     self.state = State.INFECTED
-                    self.selfQuarantine = rand < self.model.Quarantine
+                    self.onQuarantine = rand < self.model.Q
                 else:
                     self.daysExposed += 1
         elif self.state == State.INFECTED:
