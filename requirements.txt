@@ -3,3 +3,4 @@ mesa
 numpy
 pandas
 matplotlib
+pygame
